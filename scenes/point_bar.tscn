@@ -1,0 +1,78 @@
+[gd_scene load_steps=4 format=3 uid="uid://uqmjxll6n86q"]
+
+[ext_resource type="Script" uid="uid://swtk3fbg42p4" path="res://scripts/bar.gd" id="1_cbqmi"]
+[ext_resource type="Texture2D" uid="uid://r2iyafulp7t1" path="res://assets/mahjong.svg" id="2_cbqmi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cbqmi"]
+size = Vector2(44, 318)
+
+[node name="bar" type="Area2D" node_paths=PackedStringArray("bar_type")]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_cbqmi")
+bar_type = [NodePath("colour_10000"), NodePath("colour_5000"), NodePath("colour_1000"), NodePath("colour_500"), NodePath("colour_100"), NodePath("white_10000"), NodePath("white_5000"), NodePath("white_1000"), NodePath("white_100")]
+
+[node name="colour_10000" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1280, 0, 48, 320)
+metadata/value = 10000
+
+[node name="colour_5000" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1328, 0, 48, 320)
+metadata/value = 5000
+
+[node name="colour_1000" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1376, 0, 48, 320)
+metadata/value = 1000
+
+[node name="colour_500" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1424, 0, 48, 320)
+metadata/value = 500
+
+[node name="colour_100" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1472, 0, 48, 320)
+metadata/value = 100
+
+[node name="white_10000" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1152, 320, 48, 320)
+metadata/value = 10000
+
+[node name="white_5000" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1200, 320, 48, 320)
+metadata/value = 5000
+
+[node name="white_1000" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1248, 320, 48, 320)
+metadata/value = 1000
+
+[node name="white_100" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_cbqmi")
+region_enabled = true
+region_rect = Rect2(1296, 320, 48, 320)
+metadata/value = 100
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cbqmi")

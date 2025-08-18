@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1y8nhshml8d1"]
+
+[ext_resource type="Script" uid="uid://dwlmvpk6luo2o" path="res://scripts/game_manager.gd" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://de3yyi2o773kf" path="res://scenes/level_1.tscn" id="2_0wfyh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wfyh"]
+bg_color = Color(0.12516, 0.303025, 0.163901, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugp2"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Game" type="Node2D"]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("1_o5qli")
+levels = Array[PackedScene]([ExtResource("2_0wfyh")])
+
+[node name="MainSceneNode" type="Node2D" parent="."]
+
+[node name="Panel" type="Panel" parent="MainSceneNode"]
+offset_left = -544.0
+offset_top = -360.0
+offset_right = 544.0
+offset_bottom = 360.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0wfyh")
+
+[node name="ItemList" type="ItemList" parent="MainSceneNode/Panel"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 142.0
+offset_right = 293.0
+offset_bottom = 232.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugp2")
+item_count = 3
+item_0/text = "Začetniki"
+item_1/text = "Poznavalci"
+item_1/selectable = false
+item_1/disabled = true
+item_2/text = "Mojstri"
+item_2/selectable = false
+item_2/disabled = true
+
+[node name="Camera2D" type="Camera2D" parent="MainSceneNode"]
+
+[connection signal="item_clicked" from="MainSceneNode/Panel/ItemList" to="GameManager" method="_on_item_list_item_clicked"]

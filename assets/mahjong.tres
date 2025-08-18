@@ -1,0 +1,29 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://ms0bqulpucf"]
+
+[ext_resource type="Texture2D" uid="uid://r2iyafulp7t1" path="res://assets/mahjong.svg" id="1_oqoui"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pa55s"]
+texture = ExtResource("1_oqoui")
+64:0/0 = 0
+65:0/0 = 0
+80:0/size_in_atlas = Vector2i(3, 20)
+80:0/0 = 0
+83:0/size_in_atlas = Vector2i(3, 20)
+83:0/0 = 0
+86:0/size_in_atlas = Vector2i(3, 20)
+86:0/0 = 0
+89:0/size_in_atlas = Vector2i(3, 20)
+89:0/0 = 0
+92:0/size_in_atlas = Vector2i(3, 20)
+92:0/0 = 0
+72:20/size_in_atlas = Vector2i(3, 20)
+72:20/0 = 0
+75:20/size_in_atlas = Vector2i(3, 20)
+75:20/0 = 0
+78:20/size_in_atlas = Vector2i(3, 20)
+78:20/0 = 0
+81:20/size_in_atlas = Vector2i(3, 20)
+81:20/0 = 0
+
+[resource]
+sources/1 = SubResource("TileSetAtlasSource_pa55s")
