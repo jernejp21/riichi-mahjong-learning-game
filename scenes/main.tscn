@@ -1,45 +1,112 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1y8nhshml8d1"]
+[gd_scene load_steps=3 format=3 uid="uid://c1y8nhshml8d1"]
 
 [ext_resource type="Script" uid="uid://dwlmvpk6luo2o" path="res://scripts/game_manager.gd" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://de3yyi2o773kf" path="res://scenes/level_1.tscn" id="2_0wfyh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wfyh"]
-bg_color = Color(0.12516, 0.303025, 0.163901, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugp2"]
-bg_color = Color(0, 0, 0, 1)
-
-[node name="Game" type="Node2D"]
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_o5qli")
 levels = Array[PackedScene]([ExtResource("2_0wfyh")])
 
-[node name="MainSceneNode" type="Node2D" parent="."]
+[node name="StartScreen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="MainSceneNode"]
-offset_left = -544.0
-offset_top = -360.0
-offset_right = 544.0
-offset_bottom = 360.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_0wfyh")
+[node name="Background" type="ColorRect" parent="StartScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0903793, 0.331614, 0.155271, 1)
 
-[node name="ItemList" type="ItemList" parent="MainSceneNode/Panel"]
-layout_mode = 0
-offset_left = 117.0
-offset_top = 142.0
-offset_right = 293.0
-offset_bottom = 232.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_sugp2")
-item_count = 3
-item_0/text = "Začetniki"
-item_1/text = "Poznavalci"
-item_1/selectable = false
-item_1/disabled = true
-item_2/text = "Mojstri"
-item_2/selectable = false
-item_2/disabled = true
+[node name="TitleContainer" type="MarginContainer" parent="StartScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -411.0
+offset_right = 411.0
+offset_bottom = 88.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 32
 
-[node name="Camera2D" type="Camera2D" parent="MainSceneNode"]
+[node name="Title" type="Label" parent="StartScreen/TitleContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 64
+text = "Naučimo se riichi mahjong"
 
-[connection signal="item_clicked" from="MainSceneNode/Panel/ItemList" to="GameManager" method="_on_item_list_item_clicked"]
+[node name="ButtonContainer" type="MarginContainer" parent="StartScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.5
+offset_top = -86.5
+offset_right = 85.5
+offset_bottom = 86.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StartScreen/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 7
+
+[node name="BeginnerButton" type="Button" parent="StartScreen/ButtonContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Začetniki"
+icon_alignment = 1
+
+[node name="IntermediateButton" type="Button" parent="StartScreen/ButtonContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Poznavalci"
+
+[node name="ExpertButton" type="Button" parent="StartScreen/ButtonContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Mojstri"
+
+[node name="AboutContainer" type="MarginContainer" parent="StartScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.5
+offset_top = -53.0
+offset_right = 45.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 32
+
+[node name="AboutButton" type="Button" parent="StartScreen/AboutContainer"]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "O igri"
+
+[connection signal="pressed" from="StartScreen/ButtonContainer/VBoxContainer/BeginnerButton" to="GameManager" method="_on_beginner_button_pressed"]
+[connection signal="pressed" from="StartScreen/ButtonContainer/VBoxContainer/IntermediateButton" to="GameManager" method="_on_intermediate_button_pressed"]
+[connection signal="pressed" from="StartScreen/ButtonContainer/VBoxContainer/ExpertButton" to="GameManager" method="_on_expert_button_pressed"]

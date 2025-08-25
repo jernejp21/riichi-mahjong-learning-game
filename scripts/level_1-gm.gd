@@ -3,12 +3,15 @@ extends Node
 @export var point_bar: PackedScene
 @export var confirm_button: Button
 @export var points_label: Label
+@export var select_colour_button: Button
+@export var select_white_button: Button
+@export var colour_picker_screen: Control
 
 @onready var game: Node2D = $".."
-@onready var bar: Area2D = $"../Board/Selection_panel/bar"
-@onready var selection_panel: Panel = $"../Board/Selection_panel"
+@onready var bar: Area2D = $"../Practice/Selection_panel/bar"
+@onready var selection_panel: Panel = $"../Practice/Selection_panel"
 
-signal end_level
+signal level_ended
 
 
 var is_draggable = false
@@ -48,15 +51,21 @@ func setup_white_bars() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#setup_colour_bars()
-	setup_white_bars()
-	$"../AnimationPlayer".play("transition")
+	
 	
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if select_colour_button.button_pressed:
+		#select_colour_button.button_pressed = false
+		colour_picker_screen.visible = false
+		setup_colour_bars()
+	elif select_white_button.button_pressed:
+		#select_white_button.button_pressed = false
+		setup_white_bars()
+		colour_picker_screen.visible = false
 	if is_draggable:
 		var node = get_node(node_path)
 		node.position = game.get_global_mouse_position()
@@ -71,7 +80,7 @@ func _on_button_pressed() -> void:
 	points_label.text = "Točk: " + str(score)
 	
 	if score == 30000:
-		end_level.emit()
+		level_ended.emit()
 	
 func _on_bar_input_event(viewport: Node, event: InputEvent, shape_idx: int, type: String) -> void:
 	if event.is_action_pressed("spawn"):
