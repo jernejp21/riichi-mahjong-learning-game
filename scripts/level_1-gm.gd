@@ -19,9 +19,17 @@ var is_pressed = false
 var cnt = 0
 var bar_value: int
 var node_path: String
+var point_bar_selection: point_bar_selection_enum
+
+enum point_bar_selection_enum
+{
+	COLOUR_BARS,
+	WHITE_BARS
+}
 
 func setup_colour_bars() -> void:
 	var new_bar = null
+	point_bar_selection = point_bar_selection_enum.COLOUR_BARS
 	
 	for bar_idx in range(5):
 		new_bar = point_bar.instantiate()
@@ -37,6 +45,7 @@ func setup_colour_bars() -> void:
 
 func setup_white_bars() -> void:
 	var new_bar = null
+	point_bar_selection = point_bar_selection_enum.WHITE_BARS
 	
 	for bar_idx in range(5, 9):
 		new_bar = point_bar.instantiate()
@@ -51,8 +60,6 @@ func setup_white_bars() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
-	
 	pass # Replace with function body.
 
 
@@ -70,17 +77,42 @@ func _process(_delta: float) -> void:
 		var node = get_node(node_path)
 		node.position = game.get_global_mouse_position()
 
-func _on_button_pressed() -> void:
+func _on_confirm_button_pressed() -> void:
 	var nodes = get_children()
-	var score = 0
+	var score := 0
+	var bars := {"10000": 0,
+				  "5000": 0,
+				  "1000": 0,
+				  "500": 0,
+				  "100": 0}
+	var level_cleared = true
 	
 	for node in nodes:
 		if "bar" in node.name:
-			score += node.get_value()
+			var points = node.get_value()
+			bars[str(points)] += 1
+			score += points
+		
 	points_label.text = "Točk: " + str(score)
 	
-	if score == 30000:
+	if bars["10000"] != 1:
+		level_cleared = false
+	elif bars["5000"] != 3:
+		level_cleared = false
+	elif bars["1000"] != 4:
+		level_cleared = false
+	elif bars["500"] != 1 and point_bar_selection == point_bar_selection_enum.COLOUR_BARS:
+		level_cleared = false
+	elif bars["100"] != 5 and point_bar_selection == point_bar_selection_enum.COLOUR_BARS:
+		level_cleared = false
+	elif bars["100"] != 10 and point_bar_selection == point_bar_selection_enum.WHITE_BARS:
+		level_cleared = false
+	
+	if level_cleared:
+		print("Level cleared")
 		level_ended.emit()
+	else:
+		print("Level not cleared")
 	
 func _on_bar_input_event(viewport: Node, event: InputEvent, shape_idx: int, type: String) -> void:
 	if event.is_action_pressed("spawn"):

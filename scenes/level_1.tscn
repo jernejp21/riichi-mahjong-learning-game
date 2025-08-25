@@ -226,4 +226,4 @@ layout_mode = 2
 theme_override_styles/hover = SubResource("StyleBoxTexture_fcfvj")
 theme_override_styles/normal = SubResource("StyleBoxTexture_pa8r4")
 
-[connection signal="pressed" from="Practice/Confirm_button" to="GameManager" method="_on_button_pressed"]
+[connection signal="pressed" from="Practice/Confirm_button" to="GameManager" method="_on_confirm_button_pressed"]
