@@ -1,15 +1,19 @@
 extends Node
 
-@export var point_bar: PackedScene
+@export var point_stick: PackedScene
 @export var confirm_button: Button
 @export var points_label: Label
 @export var select_colour_button: Button
 @export var select_white_button: Button
-@export var colour_picker_screen: Control
 
 @onready var game: Node2D = $".."
-@onready var bar: Area2D = $"../Practice/Selection_panel/bar"
-@onready var selection_panel: Panel = $"../Practice/Selection_panel"
+@onready var stick: Area2D = %stick
+@onready var selection_panel: Panel = %Selection_panel
+@onready var colour_picker_screen: CanvasLayer = %ColourPickerLayer
+@onready var tutorial_layer: CanvasLayer = %TutorialLayer
+@onready var practice_layer: CanvasLayer = %PracticeLayer
+@onready var level_over_layer: CanvasLayer = %LevelOverLayer
+
 
 signal level_ended
 
@@ -17,46 +21,46 @@ signal level_ended
 var is_draggable = false
 var is_pressed = false
 var cnt = 0
-var bar_value: int
+var stick_value: int
 var node_path: String
-var point_bar_selection: point_bar_selection_enum
+var point_stick_selection: point_stick_selection_enum
 
-enum point_bar_selection_enum
+enum point_stick_selection_enum
 {
-	COLOUR_BARS,
-	WHITE_BARS
+	COLOUR_STICKS,
+	WHITE_STICKS
 }
 
-func setup_colour_bars() -> void:
-	var new_bar = null
-	point_bar_selection = point_bar_selection_enum.COLOUR_BARS
+func setup_colour_sticks() -> void:
+	var new_stick = null
+	point_stick_selection = point_stick_selection_enum.COLOUR_STICKS
 	
-	for bar_idx in range(5):
-		new_bar = point_bar.instantiate()
-		new_bar.position = bar.position + Vector2(48 * bar_idx, 0)
-		var type = new_bar.bar_type[bar_idx].name
-		new_bar.set_type(type)
-		new_bar.input_event.connect(_on_bar_input_event.bind(type))
-		selection_panel.add_child(new_bar)
-		var path = new_bar.get_path()
-		new_bar.mouse_entered.connect(_on_bar_mouse_entered.bind(path))
-		new_bar.mouse_exited.connect(_on_bar_mouse_exited.bind(path))
+	for stick_idx in range(5):
+		new_stick = point_stick.instantiate()
+		new_stick.position = stick.position + Vector2(48 * stick_idx, 0)
+		var type = new_stick.stick_type[stick_idx].name
+		new_stick.set_type(type)
+		new_stick.input_event.connect(_on_stick_input_event.bind(type))
+		selection_panel.add_child(new_stick)
+		var path = new_stick.get_path()
+		new_stick.mouse_entered.connect(_on_stick_mouse_entered.bind(path))
+		new_stick.mouse_exited.connect(_on_stick_mouse_exited.bind(path))
 		
 
-func setup_white_bars() -> void:
-	var new_bar = null
-	point_bar_selection = point_bar_selection_enum.WHITE_BARS
+func setup_white_sticks() -> void:
+	var new_stick = null
+	point_stick_selection = point_stick_selection_enum.WHITE_STICKS
 	
-	for bar_idx in range(5, 9):
-		new_bar = point_bar.instantiate()
-		new_bar.position = bar.position + Vector2(48 * (bar_idx - 5), 0)
-		var type = new_bar.bar_type[bar_idx].name
-		new_bar.set_type(type)
-		new_bar.input_event.connect(_on_bar_input_event.bind(type))
-		selection_panel.add_child(new_bar)
-		var path = new_bar.get_path()
-		new_bar.mouse_entered.connect(_on_bar_mouse_entered.bind(path))
-		new_bar.mouse_exited.connect(_on_bar_mouse_exited.bind(path))
+	for stick_idx in range(5, 9):
+		new_stick = point_stick.instantiate()
+		new_stick.position = stick.position + Vector2(48 * (stick_idx - 5), 0)
+		var type = new_stick.stick_type[stick_idx].name
+		new_stick.set_type(type)
+		new_stick.input_event.connect(_on_stick_input_event.bind(type))
+		selection_panel.add_child(new_stick)
+		var path = new_stick.get_path()
+		new_stick.mouse_entered.connect(_on_stick_mouse_entered.bind(path))
+		new_stick.mouse_exited.connect(_on_stick_mouse_exited.bind(path))
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -68,10 +72,10 @@ func _process(_delta: float) -> void:
 	if select_colour_button.button_pressed:
 		#select_colour_button.button_pressed = false
 		colour_picker_screen.visible = false
-		setup_colour_bars()
+		setup_colour_sticks()
 	elif select_white_button.button_pressed:
 		#select_white_button.button_pressed = false
-		setup_white_bars()
+		setup_white_sticks()
 		colour_picker_screen.visible = false
 	if is_draggable:
 		var node = get_node(node_path)
@@ -80,7 +84,7 @@ func _process(_delta: float) -> void:
 func _on_confirm_button_pressed() -> void:
 	var nodes = get_children()
 	var score := 0
-	var bars := {"10000": 0,
+	var sticks := {"10000": 0,
 				  "5000": 0,
 				  "1000": 0,
 				  "500": 0,
@@ -88,24 +92,24 @@ func _on_confirm_button_pressed() -> void:
 	var level_cleared = true
 	
 	for node in nodes:
-		if "bar" in node.name:
+		if "stick" in node.name:
 			var points = node.get_value()
-			bars[str(points)] += 1
+			sticks[str(points)] += 1
 			score += points
 		
 	points_label.text = "Točk: " + str(score)
 	
-	if bars["10000"] != 1:
+	if sticks["10000"] != 1:
 		level_cleared = false
-	elif bars["5000"] != 3:
+	elif sticks["5000"] != 3:
 		level_cleared = false
-	elif bars["1000"] != 4:
+	elif sticks["1000"] != 4:
 		level_cleared = false
-	elif bars["500"] != 1 and point_bar_selection == point_bar_selection_enum.COLOUR_BARS:
+	elif sticks["500"] != 1 and point_stick_selection == point_stick_selection_enum.COLOUR_STICKS:
 		level_cleared = false
-	elif bars["100"] != 5 and point_bar_selection == point_bar_selection_enum.COLOUR_BARS:
+	elif sticks["100"] != 5 and point_stick_selection == point_stick_selection_enum.COLOUR_STICKS:
 		level_cleared = false
-	elif bars["100"] != 10 and point_bar_selection == point_bar_selection_enum.WHITE_BARS:
+	elif sticks["100"] != 10 and point_stick_selection == point_stick_selection_enum.WHITE_STICKS:
 		level_cleared = false
 	
 	if level_cleared:
@@ -113,21 +117,23 @@ func _on_confirm_button_pressed() -> void:
 		level_ended.emit()
 	else:
 		print("Level not cleared")
+	#practice_layer.visible = false
+	#level_over_layer.visible = true
 	
-func _on_bar_input_event(viewport: Node, event: InputEvent, shape_idx: int, type: String) -> void:
+func _on_stick_input_event(viewport: Node, event: InputEvent, shape_idx: int, type: String) -> void:
 	if event.is_action_pressed("spawn"):
-		var new_bar: Node = point_bar.instantiate()
-		new_bar.position = game.get_global_mouse_position()
-		var name = "bar" + str(cnt)
-		new_bar.name = name
-		new_bar.set_type(type)
-		new_bar.input_event.connect(_on_bar_instance_input_event.bind(name))
+		var new_stick: Node = point_stick.instantiate()
+		new_stick.position = game.get_global_mouse_position()
+		var instance_name = "stick" + str(cnt)
+		new_stick.name = instance_name
+		new_stick.set_type(type)
+		new_stick.input_event.connect(_on_stick_instance_input_event.bind(instance_name))
 		cnt += 1
-		add_child(new_bar)
-		new_bar.emit_signal("input_event", viewport, event, shape_idx)
+		add_child(new_stick)
+		new_stick.emit_signal("input_event", viewport, event, shape_idx)
 	
 
-func _on_bar_instance_input_event(viewport: Node, event: InputEvent, shape_idx: int, node_pth: String) -> void:
+func _on_stick_instance_input_event(_viewport: Node, event: InputEvent, _shape_idx: int, node_pth: String) -> void:
 	if event.is_action_pressed("spawn"):
 		is_draggable = true
 		node_path = scene_file_path + node_pth
@@ -142,13 +148,26 @@ func _on_bar_instance_input_event(viewport: Node, event: InputEvent, shape_idx: 
 	
 
 
-func _on_bar_mouse_entered(path: String) -> void:
+func _on_stick_mouse_entered(path: String) -> void:
 	var node = get_node(path)
 	node.scale = Vector2(0.55, 0.55)
 	pass # Replace with function body.
 
 
-func _on_bar_mouse_exited(path: String) -> void:
+func _on_stick_mouse_exited(path: String) -> void:
 	var node = get_node(path)
 	node.scale = Vector2(0.5, 0.5)
+	pass # Replace with function body.
+
+
+func _on_timer_timeout() -> void:
+	%"Click to continue".visible = true
+	pass # Replace with function body.
+
+
+func _on_tutorial_panel_gui_input(event: InputEvent) -> void:
+	if event.is_action("spawn"):
+		tutorial_layer.visible = false
+		practice_layer.visible = true
+		colour_picker_screen.visible = true
 	pass # Replace with function body.

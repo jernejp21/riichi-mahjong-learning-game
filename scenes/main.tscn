@@ -8,8 +8,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
-offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -81,11 +79,13 @@ icon_alignment = 1
 [node name="IntermediateButton" type="Button" parent="StartScreen/ButtonContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+disabled = true
 text = "Poznavalci"
 
 [node name="ExpertButton" type="Button" parent="StartScreen/ButtonContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+disabled = true
 text = "Mojstri"
 
 [node name="AboutContainer" type="MarginContainer" parent="StartScreen"]
@@ -106,7 +106,17 @@ theme_override_constants/margin_bottom = 32
 custom_minimum_size = Vector2(128, 64)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+disabled = true
 text = "O igri"
+
+[node name="VersionLabel" type="Label" parent="StartScreen"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1041.0
+offset_top = 646.0
+offset_right = 1169.0
+offset_bottom = 669.0
+text = "Verzija"
 
 [connection signal="pressed" from="StartScreen/ButtonContainer/VBoxContainer/BeginnerButton" to="GameManager" method="_on_beginner_button_pressed"]
 [connection signal="pressed" from="StartScreen/ButtonContainer/VBoxContainer/IntermediateButton" to="GameManager" method="_on_intermediate_button_pressed"]
