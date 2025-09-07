@@ -13,9 +13,13 @@ extends Node
 @onready var tutorial_layer: CanvasLayer = %TutorialLayer
 @onready var practice_layer: CanvasLayer = %PracticeLayer
 @onready var level_over_layer: CanvasLayer = %LevelOverLayer
+@onready var click_to_continue: MarginContainer = %"Click to continue"
+@onready var level_over_title: Label = %LevelOverTitle
+@onready var level_over_button: Button = %LevelOverButton
 
-
-signal level_ended
+## Emitted at the end of the level to show if we advance to the 
+## next level or not.
+signal level_ended(next_level: bool)
 
 
 var is_draggable = false
@@ -24,6 +28,7 @@ var cnt = 0
 var stick_value: int
 var node_path: String
 var point_stick_selection: point_stick_selection_enum
+var level_cleared = true
 
 enum point_stick_selection_enum
 {
@@ -89,7 +94,7 @@ func _on_confirm_button_pressed() -> void:
 				  "1000": 0,
 				  "500": 0,
 				  "100": 0}
-	var level_cleared = true
+	level_cleared = true
 	
 	for node in nodes:
 		if "stick" in node.name:
@@ -113,12 +118,17 @@ func _on_confirm_button_pressed() -> void:
 		level_cleared = false
 	
 	if level_cleared:
-		print("Level cleared")
-		level_ended.emit()
+		level_over_title.text = "Pravilno"
+		level_over_button.text = "Naslednje vprašanje"
 	else:
-		print("Level not cleared")
-	#practice_layer.visible = false
-	#level_over_layer.visible = true
+		level_over_title.text = "Napačno"
+		level_over_button.text = "Ponovi vprašanje"
+		
+	for node in get_children():
+		node.queue_free()
+		
+	practice_layer.visible = false
+	level_over_layer.visible = true
 	
 func _on_stick_input_event(viewport: Node, event: InputEvent, shape_idx: int, type: String) -> void:
 	if event.is_action_pressed("spawn"):
@@ -161,13 +171,18 @@ func _on_stick_mouse_exited(path: String) -> void:
 
 
 func _on_timer_timeout() -> void:
-	%"Click to continue".visible = true
+	click_to_continue.visible = true
 	pass # Replace with function body.
 
 
 func _on_tutorial_panel_gui_input(event: InputEvent) -> void:
-	if event.is_action("spawn"):
+	if event.is_action("spawn") and click_to_continue.visible:
 		tutorial_layer.visible = false
 		practice_layer.visible = true
 		colour_picker_screen.visible = true
+	pass # Replace with function body.
+
+
+func _on_level_over_button_pressed() -> void:
+	level_ended.emit(level_cleared)
 	pass # Replace with function body.

@@ -17,10 +17,12 @@ func _process(_delta: float) -> void:
 	pass
 
 
-func _on_level_ended() -> void:
+func _on_level_ended(next_level: bool) -> void:
 	print("End of level")
 	remove_child(level)
-	level_number += 1
+	if next_level:
+		level_number += 1
+
 	if len(levels) > level_number:
 		level = levels[level_number].instantiate()
 		var gm = level.get_node("GameManager")
@@ -28,6 +30,7 @@ func _on_level_ended() -> void:
 		add_child(level)
 	else:
 		start_screen.visible = true
+		
 
 func _on_beginner_button_pressed() -> void:
 	level_number = 0

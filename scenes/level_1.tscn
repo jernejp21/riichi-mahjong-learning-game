@@ -340,6 +340,39 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_pa8r4")
 
 [node name="LevelOverLayer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
+visible = false
+
+[node name="TutorialPanel" type="PanelContainer" parent="LevelOverLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4nkto")
+
+[node name="Title" type="MarginContainer" parent="LevelOverLayer/TutorialPanel"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_top = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelOverLayer/TutorialPanel/Title"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="LevelOverTitle" type="Label" parent="LevelOverLayer/TutorialPanel/Title/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Pravilno"
+horizontal_alignment = 1
+
+[node name="LevelOverButton" type="Button" parent="LevelOverLayer/TutorialPanel/Title/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Naslednje vprašanje"
 
 [node name="TransitionLayer" type="CanvasLayer" parent="."]
 editor_description = "Transition into the level."
@@ -351,3 +384,4 @@ custom_minimum_size = Vector2(500, 500)
 [connection signal="gui_input" from="TutorialLayer/TutorialPanel" to="GameManager" method="_on_tutorial_panel_gui_input"]
 [connection signal="timeout" from="TutorialLayer/Timer" to="GameManager" method="_on_timer_timeout"]
 [connection signal="pressed" from="PracticeLayer/Confirm_button" to="GameManager" method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="LevelOverLayer/TutorialPanel/Title/VBoxContainer/LevelOverButton" to="GameManager" method="_on_level_over_button_pressed"]
