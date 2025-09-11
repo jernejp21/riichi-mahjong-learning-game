@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Tutorial_panel_text" load_steps=2 format=3 uid="uid://cvoj1f5mddcb1"]
+
+[ext_resource type="Script" uid="uid://btkoo4xa0a5rg" path="res://scripts/tutorial_panel_text.gd" id="1_pjwt4"]
+
+[resource]
+script = ExtResource("1_pjwt4")
+chapter = "2. poglavje"
+title = "Kako določiti sedežni red?"
+description = "Pripravimo vse 4 smeri neba ter številsko ploščico 1 in 2. Ponavadi sta to pinzu 1 in pinzu 2 (slika 1). Eden od igralcev premeša vse ploščice z licem navzdol (slika 2) in jih postavi v vrsto še vedno z licem navzdol (slika 3)."
+metadata/_custom_type_script = "uid://btkoo4xa0a5rg"

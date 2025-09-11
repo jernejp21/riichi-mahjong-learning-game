@@ -1,8 +1,7 @@
-extends Node
+extends CanvasLayer
 
 @export var point_stick: PackedScene
 @export var confirm_button: Button
-@export var points_label: Label
 @export var select_colour_button: Button
 @export var select_white_button: Button
 
@@ -10,12 +9,9 @@ extends Node
 @onready var stick: Area2D = %stick
 @onready var selection_panel: Panel = %Selection_panel
 @onready var colour_picker_screen: CanvasLayer = %ColourPickerLayer
-@onready var tutorial_layer: CanvasLayer = %TutorialLayer
 @onready var practice_layer: CanvasLayer = %PracticeLayer
 @onready var level_over_layer: CanvasLayer = %LevelOverLayer
-@onready var click_to_continue: MarginContainer = %"Click to continue"
-@onready var level_over_title: Label = %LevelOverTitle
-@onready var level_over_button: Button = %LevelOverButton
+@onready var level_over_panel: Level_over_panel = %LevelOverPanel
 
 ## Emitted at the end of the level to show if we advance to the 
 ## next level or not.
@@ -50,7 +46,6 @@ func setup_colour_sticks() -> void:
 		var path = new_stick.get_path()
 		new_stick.mouse_entered.connect(_on_stick_mouse_entered.bind(path))
 		new_stick.mouse_exited.connect(_on_stick_mouse_exited.bind(path))
-		
 
 func setup_white_sticks() -> void:
 	var new_stick = null
@@ -66,11 +61,6 @@ func setup_white_sticks() -> void:
 		var path = new_stick.get_path()
 		new_stick.mouse_entered.connect(_on_stick_mouse_entered.bind(path))
 		new_stick.mouse_exited.connect(_on_stick_mouse_exited.bind(path))
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -88,22 +78,18 @@ func _process(_delta: float) -> void:
 
 func _on_confirm_button_pressed() -> void:
 	var nodes = get_children()
-	var score := 0
 	var sticks := {"10000": 0,
 				  "5000": 0,
 				  "1000": 0,
 				  "500": 0,
 				  "100": 0}
 	level_cleared = true
-	
+
 	for node in nodes:
 		if "stick" in node.name:
 			var points = node.get_value()
 			sticks[str(points)] += 1
-			score += points
-		
-	points_label.text = "Točk: " + str(score)
-	
+
 	if sticks["10000"] != 1:
 		level_cleared = false
 	elif sticks["5000"] != 3:
@@ -118,18 +104,16 @@ func _on_confirm_button_pressed() -> void:
 		level_cleared = false
 	
 	if level_cleared:
-		level_over_title.text = "Pravilno"
-		level_over_button.text = "Naslednje vprašanje"
+		level_over_panel.on_level_over(true)
 	else:
-		level_over_title.text = "Napačno"
-		level_over_button.text = "Ponovi vprašanje"
-		
+		level_over_panel.on_level_over(false)
+	
 	for node in get_children():
 		node.queue_free()
 		
 	practice_layer.visible = false
 	level_over_layer.visible = true
-	
+
 func _on_stick_input_event(viewport: Node, event: InputEvent, shape_idx: int, type: String) -> void:
 	if event.is_action_pressed("spawn"):
 		var new_stick: Node = point_stick.instantiate()
@@ -141,7 +125,6 @@ func _on_stick_input_event(viewport: Node, event: InputEvent, shape_idx: int, ty
 		cnt += 1
 		add_child(new_stick)
 		new_stick.emit_signal("input_event", viewport, event, shape_idx)
-	
 
 func _on_stick_instance_input_event(_viewport: Node, event: InputEvent, _shape_idx: int, node_pth: String) -> void:
 	if event.is_action_pressed("spawn"):
@@ -155,34 +138,14 @@ func _on_stick_instance_input_event(_viewport: Node, event: InputEvent, _shape_i
 		node_path = scene_file_path + node_pth
 		var node = get_node(node_path)
 		node.queue_free()
-	
-
 
 func _on_stick_mouse_entered(path: String) -> void:
 	var node = get_node(path)
 	node.scale = Vector2(0.55, 0.55)
-	pass # Replace with function body.
-
 
 func _on_stick_mouse_exited(path: String) -> void:
 	var node = get_node(path)
 	node.scale = Vector2(0.5, 0.5)
-	pass # Replace with function body.
-
-
-func _on_timer_timeout() -> void:
-	click_to_continue.visible = true
-	pass # Replace with function body.
-
-
-func _on_tutorial_panel_gui_input(event: InputEvent) -> void:
-	if event.is_action("spawn") and click_to_continue.visible:
-		tutorial_layer.visible = false
-		practice_layer.visible = true
-		colour_picker_screen.visible = true
-	pass # Replace with function body.
-
 
 func _on_level_over_button_pressed() -> void:
 	level_ended.emit(level_cleared)
-	pass # Replace with function body.

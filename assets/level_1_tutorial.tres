@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Tutorial_panel_text" load_steps=2 format=3 uid="uid://4g4yq4havw0y"]
+
+[ext_resource type="Script" uid="uid://btkoo4xa0a5rg" path="res://scripts/tutorial_panel_text.gd" id="1_3ew5c"]
+
+[resource]
+script = ExtResource("1_3ew5c")
+chapter = "1. poglavje"
+title = "Točkovne palčke"
+description = "Pred začetkom igre mora vsak igralec preveriti, da ima zadostno število točk. Pri WRC pravilih vsak igralec začne igro s 30000 točkami. Točkovne palčke so dveh vrst – bele in barvne. Ponavadi se pri ročnih setih uporabljajo bele točkovne palčke, pri avtomatskih mizah pa barvne.
+V tem poglavju se bomo načili vrednosti točkovnih palčk."
+metadata/_custom_type_script = "uid://btkoo4xa0a5rg"

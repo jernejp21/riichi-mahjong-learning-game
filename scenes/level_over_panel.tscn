@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq2n1wqgr0f6a"]
+
+[ext_resource type="Script" uid="uid://ba1h14nfandi3" path="res://scripts/level_over_panel.gd" id="1_op56q"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nkto"]
+bg_color = Color(0.0903793, 0.331614, 0.155271, 1)
+
+[node name="LevelOverPanel" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4nkto")
+script = ExtResource("1_op56q")
+
+[node name="Title" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_top = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Title"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="LevelOverTitle" type="Label" parent="Title/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Pravilno / Napačno"
+horizontal_alignment = 1
+
+[node name="LevelOverButton" type="Button" parent="Title/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Naslednje vprašanje
+Prejšnje vprašanje"
+
+[connection signal="pressed" from="Title/VBoxContainer/LevelOverButton" to="." method="_on_level_over_button_pressed"]

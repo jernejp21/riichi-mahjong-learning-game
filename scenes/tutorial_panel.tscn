@@ -1,0 +1,99 @@
+[gd_scene load_steps=5 format=3 uid="uid://bni4xcipe5tsa"]
+
+[ext_resource type="Script" uid="uid://dvk7ni2btof66" path="res://scripts/tutorial_panel.gd" id="1_1wo7w"]
+[ext_resource type="Resource" uid="uid://4g4yq4havw0y" path="res://assets/level_1_tutorial.tres" id="2_oonuy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nkto"]
+bg_color = Color(0.0903793, 0.331614, 0.155271, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pa8r4"]
+content_margin_left = 25.0
+content_margin_top = 15.0
+content_margin_right = 0.0
+content_margin_bottom = 15.0
+bg_color = Color(4.69275e-07, 0.19103, 0.0201227, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="TutorialPanel" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4nkto")
+script = ExtResource("1_1wo7w")
+tutorial_text = ExtResource("2_oonuy")
+
+[node name="Title" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Title"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Chapter" type="Label" parent="Title/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Poglavje"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Title/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Naslov"
+horizontal_alignment = 1
+
+[node name="Discription" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_top = 170
+
+[node name="Panel" type="PanelContainer" parent="Discription"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_pa8r4")
+
+[node name="Description" type="Label" parent="Discription/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "Več vrstični opis"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Click to continue" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 25
+
+[node name="Label" type="Label" parent="Click to continue"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "Klikni za naprej"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
